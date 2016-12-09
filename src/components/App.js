@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {getCurrentLocation} from '../lib/location'
+import {getCurrentLocation, returnFetch} from '../lib/location'
 import logo from '../logo.svg'
 import '../style/App.css'
 
@@ -15,7 +15,10 @@ class App extends Component {
   componentDidMount() {
     getCurrentLocation()
       .then(res => this.setState({ currentLocation: res}))
+      .then(() => returnFetch(this.state.currentLocation))
+      .then(res => console.log(res))
       .catch(err => console.log(err))
+
   }
   render() {
     const { currentLocation } = this.state
