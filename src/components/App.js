@@ -1,8 +1,14 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react'
+import {getCurrentLocation} from '../lib/location'
+import logo from '../logo.svg'
+import '../style/App.css'
 
 class App extends Component {
+  componentDidMount() {
+    getCurrentLocation()
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
   render() {
     return (
       <div className="App">
@@ -14,8 +20,8 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
