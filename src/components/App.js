@@ -18,16 +18,8 @@ const AppHeader = styled(Header)`
 
 export default () =>
   <AppWrapper>
-    <AppHeader title='Hello'>
+    <AppHeader title='Hinner jag till systemet?'>
     </AppHeader>
     <IWantBeer />
     <div id='map'></div>
   </AppWrapper>
-
-
-
-
-
-
-
-
