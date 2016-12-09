@@ -2,8 +2,10 @@ const options = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0,
-  apikey: 'AIzaSyDMttPm-7O9LoGlL2uxqX6QQFmhknEnIBU'
+  apikey: 'AIzaSyCfkMXJZj5n8qBla3zBKsQNVOYX-Q0-r4g'
 }
+
+export const API_KEY = 'AIzaSyCfkMXJZj5n8qBla3zBKsQNVOYX-Q0-r4g'
 
 export function getCurrentLocation() {
   console.log(navigator.geolocation)
@@ -19,12 +21,31 @@ export function getCurrentLocation() {
 }
 
 
+export function getStoresNearby(places, {lat, lng}) {
+  return new Promise((resolve, reject) => {
+    places.nearbySearch({
+      location: {
+        lat,
+        lng
+      },
+      radius: 5000,
+      name: 'systembolaget'
+    }, (results, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK)
+        return resolve(results)
+      return reject('Something went wrong')
+    })
+  })
+}
+
 
 export function returnFetch(currentLocation) {
-  return fetch('https://maps.googleapis.com/maps/api/place/textsearch/json?query="systembolaget"&key='+options.apikey+'&location= 56.6888163,16.364827599999998', {
-
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
+  return fetch('https://maps.googleapis.com/maps/api/place/textsearch/json?query="systembolaget"&key='+options.apikey+'&location=56.6888163,16.364827599999998', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
   })
   .then(function (res) {
     return res.json()
@@ -32,8 +53,11 @@ export function returnFetch(currentLocation) {
   .then(function (resJson) {
     console.log(resJson.results[0].geometry.location)
     return fetch('https://maps.googleapis.com/maps/api/directions/json?origin=56.6888163,16.364827599999998&destination= '+resJson.results[0].geometry.location.lat +','+resJson.results[0].geometry.location.lng+'&mode=WALKING&key='+options.apikey, {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
     }).then(function (res) {
       return res.json()
     })

@@ -1,20 +1,39 @@
 import React, {Component} from 'react'
-import {getCurrentLocation, returnFetch} from '../lib/location'
+import {getCurrentLocation, getStoresNearby} from '../lib/location'
 
-export default class IWantBeer extends Component {
-  componentDidMount() {
-    getCurrentLocation()
-      .then(res => this.setState({ currentLocation: res}))
-      .then(() => returnFetch(this.state.currentLocation))
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+class IWantBeer extends Component {
+  constructor() {
+    super()
+    this.state = {
+      stores: null
+    }
+  }
+  async componentDidMount() {
+    const map = new window.google.maps.Map(document.getElementById('map'))
+    const places = new window.google.maps.places.PlacesService(map)
+    const loc = await getCurrentLocation()
+    const stores = await getStoresNearby(places, {
+      lat: loc.latitude,
+      lng: loc.longitude
+    })
+
+    console.log(window.google.maps)
+    console.log(stores)
+    this.setState({
+      stores,
+    })
+
   }
 
   render() {
-    return (
-      <div>
-        I want ze beer
-      </div>
-    )
+      return <div>
+        <div id='map'></div>
+          <button onClick={this.beerTime}>Jag vill dricka öl nu!</button>
+        </div>
+    
+    
+    
   }
 }
+
+export default IWantBeer
