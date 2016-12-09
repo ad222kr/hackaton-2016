@@ -1,34 +1,32 @@
-import React, {Component} from 'react'
-import {getCurrentLocation, returnFetch} from '../lib/location'
+import React from 'react'
+import {Layout, Header} from 'react-mdl'
+import styled from 'styled-components'
+import IWantBeer from './IWantBeer'
 import logo from '../logo.svg'
 import '../style/App.css'
 
-class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      currentLocation: {}
-    }
-  }
+const AppWrapper = styled(Layout)`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+`
+
+const AppHeader = styled(Header)`
+  color: white;
+`
 
 
-  componentDidMount() {
-    getCurrentLocation()
-      .then(res => this.setState({ currentLocation: res}))
-      .then(() => returnFetch(this.state.currentLocation))
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+export default () =>
+  <AppWrapper>
+    <AppHeader title='Hello'>
+      <IWantBeer />
+    </AppHeader>
+  </AppWrapper>
 
-  }
-  render() {
-    const { currentLocation } = this.state
-    return (
-      <div>
-      <h1>Hej!</h1>
-      {currentLocation && <p>{currentLocation.latitude} {currentLocation.longitude}</p>}
-      </div>
-    )
-  }
-}
 
-export default App
+
+
+
+
+
+
