@@ -4,21 +4,25 @@ import logo from '../logo.svg'
 import '../style/App.css'
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      currentLocation: {}
+    }
+  }
+
+
   componentDidMount() {
     getCurrentLocation()
-      .then(res => console.log(res))
+      .then(res => this.setState({ currentLocation: res}))
       .catch(err => console.log(err))
   }
   render() {
+    const { currentLocation } = this.state
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+      <h1>Hej!</h1>
+      {currentLocation && <p>{currentLocation.latitude} {currentLocation.longitude}</p>}
       </div>
     )
   }
