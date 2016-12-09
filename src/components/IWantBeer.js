@@ -22,7 +22,7 @@ class IWantBeer extends Component {
       lat: loc.latitude,
       lng: loc.longitude
     })
-    console.log(stores[0].geometry.location.lat())
+    console.log(stores[0])
     const origin = new window.google.maps.LatLng(loc.latitude, loc.longitude)
     const destination = new window.google.maps.LatLng(
       stores[0].geometry.location.lat(),
