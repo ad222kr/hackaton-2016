@@ -5,7 +5,8 @@ class IWantBeer extends Component {
   constructor() {
     super()
     this.state = {
-      stores: null
+      isOpen: null,
+      adress: null
     }
   }
   async componentDidMount() {
@@ -18,21 +19,46 @@ class IWantBeer extends Component {
     })
 
     console.log(window.google.maps)
-    console.log(stores)
+
     this.setState({
-      stores,
+      isOpen: stores[0].opening_hours.open_now,
+      adress: stores[0].vicinity
     })
 
   }
 
+  isOpenNow() {
+    if( this.state.isOpen){
+      return "Och det är öppet det kommer ta dig ungefär "+ this.getTime() + " att gå ditt"
+    }else{
+      return "och det är tyvärr stängt" 
+    }
+  }
+
+  getTime() {
+    fetch('https://maps.googleapis.com/maps/api/directions/json?origin=56.6888163,16.364827599999998&destination= 56.67046149999999,16.3354124&mode=walking&key=AIzaSyDMttPm-7O9LoGlL2uxqX6QQFmhknEnIBU', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => res.json)
+    .then(resjson => console.log(resjson))
+  }
+
+
+
   render() {
+
+
       return <div>
         <div id='map'></div>
           <button onClick={this.beerTime}>Jag vill dricka öl nu!</button>
+          <h4>Ditt närmsta system bolag ligger på {this.state.adress}</h4>
+          <p>{this.isOpenNow()}</p>
         </div>
-    
-    
-    
+
   }
 }
 
