@@ -19,9 +19,9 @@ const AppHeader = styled(Header)`
 export default () =>
   <AppWrapper>
     <AppHeader title='Hello'>
-      
     </AppHeader>
     <IWantBeer />
+    <div id='map'></div>
   </AppWrapper>
 
 

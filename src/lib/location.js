@@ -20,7 +20,6 @@ export function getCurrentLocation() {
   })
 }
 
-
 export function getStoresNearby(places, {lat, lng}) {
   return new Promise((resolve, reject) => {
     places.nearbySearch({
@@ -38,6 +37,24 @@ export function getStoresNearby(places, {lat, lng}) {
   })
 }
 
+const distanceService = new window.google.maps.DistanceMatrixService()
+
+export function getTravelInformation(origin, destination, travelMode = 'WALKING') {
+  return new Promise((resolve, reject) => {
+    
+    distanceService.getDistanceMatrix({
+      origins: [origin],
+      destinations: [destination],
+      travelMode,
+      unitSystem: window.google.maps.UnitSystem.METRIC,
+
+    }, (response, status) => {
+      if (status === 'OK') 
+        return resolve(response)
+      return reject('Something went wrong')
+    })
+  })
+}
 
 export function returnFetch(currentLocation) {
   return fetch('https://maps.googleapis.com/maps/api/place/textsearch/json?query="systembolaget"&key='+options.apikey+'&location=56.6888163,16.364827599999998', {

@@ -1,30 +1,45 @@
 import React, {Component} from 'react'
-import {getCurrentLocation, getStoresNearby} from '../lib/location'
+import {getCurrentLocation, getStoresNearby, getTravelInformation} from '../lib/location'
 
 class IWantBeer extends Component {
   constructor() {
     super()
     this.state = {
+      loading: true,
       isOpen: null,
-      adress: null
+      address: null,
+      distance: null,
+      duration: null,
     }
   }
   async componentDidMount() {
     const map = new window.google.maps.Map(document.getElementById('map'))
     const places = new window.google.maps.places.PlacesService(map)
+    const directionService = new window.google.maps.DistanceMatrixService()
+    
     const loc = await getCurrentLocation()
     const stores = await getStoresNearby(places, {
       lat: loc.latitude,
       lng: loc.longitude
     })
-
-    console.log(window.google.maps)
-
+    console.log(stores[0].geometry.location.lat())
+    const origin = new window.google.maps.LatLng(loc.latitude, loc.longitude)
+    const destination = new window.google.maps.LatLng(
+      stores[0].geometry.location.lat(),
+      stores[0].geometry.location.lng(),
+    )
+    const travelInfo = await getTravelInformation(origin, destination)
+    console.log(travelInfo)
+    const {distance, duration} = travelInfo.rows[0].elements[0]
+    console.log(distance)
+    console.log(duration)
     this.setState({
+      loading: false,
       isOpen: stores[0].opening_hours.open_now,
-      adress: stores[0].vicinity
+      address: stores[0].vicinity,
+      distance,
+      duration,
     })
-
   }
 
   isOpenNow() {
@@ -35,30 +50,20 @@ class IWantBeer extends Component {
     }
   }
 
-  getTime() {
-    fetch('https://maps.googleapis.com/maps/api/directions/json?origin=56.6888163,16.364827599999998&destination= 56.67046149999999,16.3354124&mode=walking&key=AIzaSyDMttPm-7O9LoGlL2uxqX6QQFmhknEnIBU', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(res => res.json)
-    .then(resjson => console.log(resjson))
-  }
-
-
-
   render() {
-
-
-      return <div>
-        <div id='map'></div>
-          <button onClick={this.beerTime}>Jag vill dricka öl nu!</button>
-          <h4>Ditt närmsta system bolag ligger på {this.state.adress}</h4>
-          <p>{this.isOpenNow()}</p>
+    console.log(this.state.loading)
+    if (this.state.loading) {
+      return <h1>Laddar</h1>
+    } else {
+      return (
+        <div>
+          <h1>{this.isOpenNow()}</h1>
+          <p>{this.state.address}</p>
+          <p>{this.state.distance.text}</p>
+          <p>{this.state.duration.text}</p>
         </div>
-
+      )
+    }
   }
 }
 
