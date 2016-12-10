@@ -10,6 +10,7 @@ class IWantBeer extends Component {
       address: null,
       distance: null,
       duration: null,
+      closing: null,
     }
   }
   async componentDidMount() {
@@ -33,6 +34,7 @@ class IWantBeer extends Component {
     const {distance, duration} = travelInfo.rows[0].elements[0]
     console.log(distance)
     console.log(duration)
+    await this.getOpeningHours(stores[0].vicinity)
     this.setState({
       loading: false,
       isOpen: stores[0].opening_hours.open_now,
@@ -43,14 +45,54 @@ class IWantBeer extends Component {
   }
 
   isOpenNow() {
-    if( this.state.isOpen){
-      return "Och det är öppet!!  "
+    const date = new Date()
+    const hours = date.getHours()
+    const minutes = date.getMinutes()
+    // const closingHour = this.state.closing.substring(0, this.state.closing.indexOf(':'))
+    // const closingMinute = this.state.closing.substring(1, this.state.closing.indexOf(':'))
+    console.log(this.state.duration)
+    const closingHour = 3
+    const closingMinute = 45
+    const hoursLeft = closingHour - hours
+    const minutesLeft = closingMinute - minutes
+    console.log(closingHour + '' + closingMinute)
+    console.log('hours '+hours + minutes)
+    // if( this.state.isOpen){
+    if( true){
+      const date = new Date()
+      const hours = date.getHours
+
+      console.log('hours '+hours)
+
+      return "Och det är öppet!! dom stänger dock "+ this.state.closing +' så du har '+ hoursLeft + ' timmar och ' + minutesLeft + ' minuter på dig'
     }else{
-      return "Men det är tyvärr stängt"
+      return "Men det stängde klockan "+ this.state.closing
     }
   }
 
+  getOpeningHours(adress) {
+    console.log(adress)
+    const theAddress = adress.substring(0, adress.indexOf(','))
+    console.log(theAddress)
+    return fetch('https://systemet-wrapper-hgclklumew.now.sh/opening-hours?address='+theAddress,{
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(function (res) {
+      return res.json()
+    })
+    .then(resJson => {
+      this.setState({
+        closing: resJson.data
+      })
+    })
+  }
+
   render() {
+
     console.log(this.state.loading)
     if (this.state.loading) {
       return <h1>Laddar</h1>

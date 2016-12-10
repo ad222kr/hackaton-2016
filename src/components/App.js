@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import IWantBeer from './IWantBeer'
 import logo from '../logo.svg'
 import '../style/App.css'
+import pic from '../style/beerrun_dribbble.gif'
 
 const AppWrapper = styled(Layout)`
   width: 100%;
@@ -22,4 +23,8 @@ export default () =>
     </AppHeader>
     <IWantBeer />
     <div id='map'></div>
+    <div className="container">
+    <div className="image">
+      </div>
+    </div>
   </AppWrapper>

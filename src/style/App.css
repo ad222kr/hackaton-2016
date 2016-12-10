@@ -27,3 +27,51 @@ h1, h4{
 
     text-align: center;
 }
+body{
+  background-color: #ffd93d;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.container {
+  width: 80%;
+      height: 50%;
+      background-color: #ffd93d;
+      margin: 0 auto;
+      position: relative;
+      top: 36%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      overflow: hidden;
+      width: 100%;
+}
+
+.image {
+  position: absolute;
+  bottom: 0;
+  background-image: url('beerrun_dribbble.gif');
+  height: 200px;
+  width: 225px;
+  background-size: cover;
+  left: 100%;
+  animation-name: run;
+  animation-duration: 4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes run {
+  0% {left: 100% }
+  100% {left: -25%;}
+}
