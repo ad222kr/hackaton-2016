@@ -18,13 +18,11 @@ const AppHeader = styled(Header)`
 
 
 export default () =>
-  <AppWrapper>
+  <AppWrapper fixedHeader>
     <AppHeader title='Hinner jag till systemet?'>
     </AppHeader>
     <IWantBeer />
     <div id='map'></div>
-    <div className="container">
     <div className="image">
       </div>
-    </div>
   </AppWrapper>

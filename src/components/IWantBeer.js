@@ -45,26 +45,30 @@ class IWantBeer extends Component {
   }
 
   isOpenNow() {
-    const date = new Date()
-    const hours = date.getHours()
-    const minutes = date.getMinutes()
-    // const closingHour = this.state.closing.substring(0, this.state.closing.indexOf(':'))
-    // const closingMinute = this.state.closing.substring(1, this.state.closing.indexOf(':'))
-    console.log(this.state.duration)
-    const closingHour = 3
-    const closingMinute = 45
-    const hoursLeft = closingHour - hours
-    const minutesLeft = closingMinute - minutes
-    console.log(closingHour + '' + closingMinute)
-    console.log('hours '+hours + minutes)
-    // if( this.state.isOpen){
-    if( true){
+
+    console.log(this.state)
+
+    if(true){
       const date = new Date()
-      const hours = date.getHours
+      const hours = date.getHours()
+      const minutes = date.getMinutes()
+      const closingHour = 3 //this.state.closing.substring(0, this.state.closing.indexOf(':'))
+      const closingMinute = 45 //this.state.closing.substring(1, this.state.closing.indexOf(':'))
+      const hoursLeft = closingHour - hours
+      const minutesLeft = closingMinute - minutes
+      const totalMinutesLeft = hoursLeft * 60 + minutesLeft
+      const travelTime = Math.ceil(this.state.duration.value / 60)
 
-      console.log('hours '+hours)
+      console.log(hoursLeft)
+      console.log(minutesLeft)
 
-      return "Och det är öppet!! dom stänger dock "+ this.state.closing +' så du har '+ hoursLeft + ' timmar och ' + minutesLeft + ' minuter på dig'
+      console.log(totalMinutesLeft > travelTime)
+      if (totalMinutesLeft > travelTime) {
+        return "Och det är öppet!! dom stänger dock "+ this.state.closing +' så du har '+  (minutesLeft < 0 ? hoursLeft - 1 : hoursLeft) + ' timmar och ' + (minutesLeft < 0 ? minutesLeft + 60 : minutesLeft) + ' minuter på dig men du hinner'
+      } else {
+        return "Synd alkis, ingen öl för dig ikväll. Åk till ICA och köp nödraketer"
+      }
+      
     }else{
       return "Men det stängde klockan "+ this.state.closing
     }
@@ -99,8 +103,7 @@ class IWantBeer extends Component {
     } else {
       return (
         <div>
-          <h1>Ditt närmsta systembolag ligger på {this.state.address}</h1>
-          <h4>Det är {this.state.distance.text} ditt och om du går kommer det ta dig ungefär {this.state.duration.text} att komma ditt.</h4>
+          <h4>Ditt närmsta systembolag ligger på {this.state.address}</h4>
           <h4>{this.isOpenNow()}</h4>
         </div>
       )
